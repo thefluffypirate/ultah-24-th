@@ -461,16 +461,11 @@
         <p class="opening-text">Hai Safrida, ada surat buat kamu!</p>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="assets/music/lagu-kita.mp3" type="audio/mp3">
-    </audio>
+    <audio id="bg-music"> <source src="https://thefluffypirate.github.io/ultah-24-th/birthdaysong.mp3" type="audio/mp3">
+</audio>
 
     <div id="main-content">
         
-        <button id="music-btn" class="music-btn-float" onclick="toggleMusic()">
-            <span id="music-icon">⏸</span> Pause Music
-        </button>
-
 <header class="hero">
             <div class="collage-background">
                 
@@ -539,7 +534,7 @@
                     <div class="media-frame">
                         <img src="https://thefluffypirate.github.io/ultah-24-th/timeline2.JPG" alt="Foto Random" class="timeline-media">
                     </div>
-                    <h3>Petualangan</h3>
+                    <h3>Pasangan Baru</h3>
                     <p>Edisi masih polos-polosnya kita hahhahaha. Muka sek tegang gegara ndamau dibully temen temen, tapi sebenernya hati berbunga bunga. Salah satu hari terbaik yang ndabakal aku lupa💕</p>
                 </div>
             </div>
@@ -578,7 +573,7 @@
 
             <div class="timeline-item" data-aos="zoom-in">
                 <div class="timeline-content" id="surprise-box" style="border: 2px solid #ff4d6d;">
-                    <div class="date-badge" style="background: #ff4d6d;">Hari Ini, 3 Tahun Lalu</div>
+                    <div class="date-badge">Hari Ini, 3 Tahun Lalu</div>
                     <div class="media-frame">
                         <img src="https://thefluffypirate.github.io/ultah-24-th/timeline5.jpg" alt="Ultah" class="timeline-media">
                     </div>
@@ -605,7 +600,7 @@
         <footer>...</footer>
 
         <footer>
-            <p style="color: #590d22; font-weight: 600; padding: 20px;">Made with ❤️ by Your Love</p>
+            <p style="color: #590d22; font-weight: 600; padding: 20px;">Made with❤️</p>
         </footer>
     </div>
 
@@ -614,6 +609,13 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
+	if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        } else {
+            window.onbeforeunload = function () {
+                window.scrollTo(0, 0);
+            }
+        }
         const opening = document.getElementById('opening');
         const envelopeWrapper = document.querySelector('.envelope-wrapper');
         const mainContent = document.getElementById('main-content');
@@ -622,9 +624,15 @@
         let isMusicPlaying = false;
 
         function openLetter() {
+            // 1. Animasi Amplop
             envelopeWrapper.classList.add('open');
-            bgMusic.play(); isMusicPlaying = true; musicIcon.innerText = "⏸";
             
+            // 2. Putar Musik Sekali Saja (No Loop)
+            bgMusic.loop = false; // Memastikan lagu tidak mengulang
+            bgMusic.volume = 1.0; // Pastikan volume full
+            bgMusic.play(); 
+
+            // 3. Hilangkan Opening
             setTimeout(() => {
                 opening.style.transform = 'translateY(-100vh)';
             }, 800);
@@ -642,11 +650,6 @@
                 strings: ["Cantikku...", "Safrida Mulia Dewi"], 
                 typeSpeed: 100, backSpeed: 60, loop: true
             });
-        }
-
-        function toggleMusic() {
-            if (isMusicPlaying) { bgMusic.pause(); musicIcon.innerText = "🎵"; isMusicPlaying = false; } 
-            else { bgMusic.play(); musicIcon.innerText = "⏸"; isMusicPlaying = true; }
         }
 
         function celebrate() {
