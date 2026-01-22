@@ -24,7 +24,7 @@
 
 	/* --- CLOSING SECTION (POLAROID) --- */
         .closing-section {
-            padding: 80px 20px 100px 20px; /* Jarak atas bawah lega */
+            padding: 80px 20px 40px 20px; /* Jarak atas bawah lega */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,16 +111,25 @@
             color: var(--text-dark);
             overflow-x: hidden;
             min-height: 100vh;
+	    -webkit-user-select: none; /* Chrome/Safari/Opera */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE/Edge */
+            user-select: none;         /* Standar */
         }
 
         /* --- OPENING SCREEN (AMPLOP) --- */
-        #opening {
+            #opening {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #ffe6e9, #ffb3c1);
-            z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: transform 1s ease-in-out;
+            z-index: 9999; /* Pastikan selalu paling atas */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* INI KUNCINYA: Gerakan diperlambat jadi 1.5 detik & pakai ease-in-out */
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
         .envelope-wrapper {
@@ -599,9 +608,6 @@
 
         <footer>...</footer>
 
-        <footer>
-            <p style="color: #590d22; font-weight: 600; padding: 20px;">Made with❤️</p>
-        </footer>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -623,25 +629,33 @@
         const musicIcon = document.getElementById('music-icon');
         let isMusicPlaying = false;
 
-        function openLetter() {
-            // 1. Animasi Amplop
+function openLetter() {
+            // 1. Animasi Buka Amplop
             envelopeWrapper.classList.add('open');
             
-            // 2. Putar Musik Sekali Saja (No Loop)
-            bgMusic.loop = false; // Memastikan lagu tidak mengulang
-            bgMusic.volume = 1.0; // Pastikan volume full
-            bgMusic.play(); 
+            // 2. Play Music
+            bgMusic.loop = false;
+            bgMusic.volume = 1.0;
+            bgMusic.play().catch(e => console.log("Audio perlu interaksi"));
 
-            // 3. Hilangkan Opening
+            // 3. PENTING: Munculkan Main Content SEKARANG (di belakang layar amplop)
+            // Jadi pas amplop naik, isinya sudah siap (gak kosong/glitch)
+            mainContent.style.opacity = '1'; 
+
+            // 4. Tunggu amplop terbuka sebentar (0.8 detik), baru naikkan layar
             setTimeout(() => {
-                opening.style.transform = 'translateY(-100vh)';
+                opening.style.transform = 'translateY(-100vh)'; // Efek Tirai Naik
             }, 800);
 
+            // 5. Setelah tirai mulai naik, baru jalankan animasi teks mengetik
+            setTimeout(() => {
+                initAnimations(); 
+            }, 1000);
+
+            // 6. Hapus elemen opening biar gak berat (setelah animasi selesai total)
             setTimeout(() => {
                 opening.style.display = 'none';
-                mainContent.style.opacity = '1';
-                initAnimations();
-            }, 1500);
+            }, 2500);
         }
 
         function initAnimations() {
